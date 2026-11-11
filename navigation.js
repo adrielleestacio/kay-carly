@@ -26,7 +26,12 @@ document.addEventListener("DOMContentLoaded", function() {
 			// event.preventDefault(); // Prevent the default anchor behavior
 			const sectionId = link.getAttribute('id');
 			showSection(sectionId);
-		
+
+			// On mobile, close the dropdown after choosing a section.
+			if (window.innerWidth <= 900) {
+				document.querySelector('nav').style.display = 'none';
+			}
+
 			// Update active class for the clicked link
 			navLinks.forEach(link => link.classList.remove('active'));
 
@@ -74,4 +79,20 @@ document.addEventListener('DOMContentLoaded', () => {
             nav.style.display = 'block';
         }
     });
+});
+
+// Wire the hero "Explore the Elements" button to the Essential Elements nav.
+document.addEventListener('DOMContentLoaded', () => {
+	const exploreBtn = document.getElementById('explore-btn');
+	if (!exploreBtn) return;
+
+	exploreBtn.addEventListener('click', (event) => {
+		event.preventDefault();
+		const elementsLink = Array.from(document.querySelectorAll('header a'))
+			.find((a) => a.getAttribute('id') === '#elements');
+		if (elementsLink) {
+			elementsLink.click();
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+		}
+	});
 });

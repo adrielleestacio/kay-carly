@@ -71,7 +71,7 @@ header {
 }
 
 .btn:hover{
-    transform: scale3d(1.03);
+    transform: scale(1.05) translateY(-2px);
     background-color: var(--base-color);
     color: black;
     box-shadow: 0 0 25px var(--base-color);
@@ -101,12 +101,13 @@ header {
 
 nav a {
     color: white;
-    margin-left: 4rem;
+    margin-left: 2.6rem;
     font-weight: 500;
     transition: 0.3s ease;
     border-bottom: 3px solid transparent;
     font-size: 1.2em;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 nav a:hover, nav a.active{
@@ -131,6 +132,11 @@ section{
 
 h1 {
     font-size: 5rem;
+}
+
+.home-content h1 {
+    text-align: left;
+    line-height: 1.1;
 }
 
 .home-content h3 {
@@ -188,7 +194,7 @@ span {
 }
 
 .typing-text span::before{
-    content: "software Developer";
+    content: "Web Developers";
     color: var(--base-color);
     animation: words 20s infinite;
 }
@@ -232,27 +238,30 @@ span {
     }
 }
 
+/* The whole layout is sized in rem, so the base size below scales the entire
+   page per screen width. The old values (0.2–0.6rem) made phones microscopic;
+   these keep text readable everywhere. */
 @media (max-width: 424px) {
 	html {
-		font-size: 0.2rem;
+		font-size: 0.6rem;
 	}
 }
 
 @media (min-width: 425px) {
 	html {
-		font-size: 0.4rem;
+		font-size: 0.66rem;
 	}
 }
 
 @media (min-width: 600px) {
 	html {
-		font-size: 0.5rem;
+		font-size: 0.72rem;
 	}
 }
 
 @media (min-width: 768px) {
 	html {
-		font-size: 0.6rem;
+		font-size: 0.78rem;
 	}
 }
 
@@ -270,12 +279,128 @@ span {
 
 @media (min-width: 1440px) {
 	html {
-		font-size: 1.2rem;
+		font-size: 1.05rem;
 	}
 }
 
 @media (min-width: 1920px) {
 	html {
-		font-size: 1.5rem;
+		font-size: 1.25rem;
 	}
+}
+
+/* ---------------------------------------------------------------------------
+   Enhancements (2026): smooth section transitions, nicer scrollbar and
+   a few polish touches. Kept additive so nothing above is disturbed.
+--------------------------------------------------------------------------- */
+
+/* Each section fades/rises in when the nav switches to it. */
+@keyframes sectionFade {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+section {
+    animation: sectionFade 0.45s ease-out both;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Themed scrollbar to match the red accent. */
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--base-color);
+    border-radius: 10px;
+}
+
+/* Periodic-table tiles: lift and glow on hover for a more tactile feel. */
+.periodic-table .element {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    cursor: pointer;
+}
+.periodic-table .element:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 0 18px var(--base-color);
+}
+
+/* Give the content cards a smoother hover across sections. */
+.group {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.group:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
+/* Respect users who prefer less motion. */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ---- Responsive navigation ----
+   On wide screens the hamburger is hidden and the nav shows inline. On narrow
+   screens the nav collapses into a dropdown toggled by the hamburger
+   (navigation.js flips its inline display, which overrides the rule below). */
+.menu-toggle {
+    display: none;
+    font-size: 2.6rem;
+    color: var(--base-color);
+    cursor: pointer;
+}
+
+header {
+    position: relative;
+}
+
+@media (max-width: 900px) {
+    header {
+        justify-content: space-between;
+        /* Allow the absolute dropdown to escape the header. */
+        overflow: visible;
+    }
+    .menu-toggle {
+        display: block;
+    }
+    nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: #0a0a0a;
+        flex-direction: column;
+        padding: 1rem 0;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+    nav a {
+        display: block;
+        margin: 0;
+        padding: 1.2rem 2.5rem;
+        border-bottom: 3px solid transparent;
+    }
+    nav a:hover,
+    nav a.active {
+        padding: 1.2rem 2.5rem;
+        background-color: rgba(183, 75, 75, 0.12);
+    }
 }
